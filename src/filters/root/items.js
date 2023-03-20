@@ -1,4 +1,5 @@
-{   "comments": "Below items are be messages that will be processed by the pipeline",
+export default {   
+    "comments": "Below items are be messages that will be processed by the pipeline",
     "items": [
         {
             "name": "Caramel Chocolate Cheesecake",

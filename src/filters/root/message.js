@@ -1,4 +1,4 @@
-import crypto from "crytpo";
+import crypto from "crypto";
 
 /**
  * Constructs a valid message header for the ice cream pipeline
@@ -14,11 +14,11 @@ class MessageHeader {
 
     /**
      * 
-     * @param {String} id 
-     * @param {String} eventType
-     * @param {String} eventName
-     * @param {String} next
-     * @param {String} schemaURL
+     * @param {String} id - any uuid for the message payload data
+     * @param {String} eventType - refers to a CRUD action (e.g. create) 
+     * @param {String} eventName - identifier for an event
+     * @param {String|null} next - URL indicating where to route the message 
+     * @param {String|null} schemaURL - URL of a JSON Schema document to validate the message
      */
     constructor({ id, eventType, eventName, next=null, schemaURL=null }) {
         if (!id || !eventType || !eventName) {
@@ -57,20 +57,15 @@ class MessageHeader {
  * Constructs a valid message body for the ice cream pipeline
  */
 class MessageBody {
-    #eventType;
     #content;
 
-    constructor({ eventType, content }) {
+    constructor(content) {
         // We could validate the payload here
-        this.#eventType = eventType;
         this.#content = content;
     }
 
     value() {
-        return {
-            eventType: this.#eventType,
-            content: this.#content
-        }
+        return this.#content
     }
 }
 
@@ -86,7 +81,7 @@ class Message {
      * @param {MessageHeader} header 
      * @param {MessageBody} body 
      */
-    constructor({ header, body }) {
+    constructor(header, body) {
         // Or we could validate the payload here...
         this.#messageHeader = header.value();
         this.#messageBody = body.value();
@@ -100,7 +95,7 @@ class Message {
     }
 }
 
-export default {
+export {
     Message,
     MessageHeader,
     MessageBody

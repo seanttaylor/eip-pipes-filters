@@ -1,4 +1,5 @@
 import DataPipe from "./interface.js";
+import crypto from "crypto";
 import { Kafka } from "kafkajs";
 
 class KafkaDataPipe extends DataPipe {
@@ -15,10 +16,15 @@ class KafkaDataPipe extends DataPipe {
     }
     
     /**
-     * 
+     * Sends a message to the stream
+     * @param {String} topic - topic to put the message on
+     * @param {Object} message - message to add to the stream
      */
-    put() {
-
+    async put({ topic, message }) {
+        this.#producer.send({
+          topic,
+          messages: [ { key: crypto.randomUUID(), value: JSON.stringify(message) }],
+        });
     }
 
     /**

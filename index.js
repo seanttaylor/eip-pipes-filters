@@ -1,6 +1,7 @@
 import { promisify } from "util";
 import figlet from "figlet";
 import { IceCreamService, IceCreamServiceClient } from "./src/filters/root/index.js";
+import { Message, MessageHeader, MessageBody } from "./src/filters/root/message.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
 
 const APP_NAME = process.env.APP_NAME || "ice_cream_pipeline";
@@ -14,11 +15,16 @@ const banner = await figletize(`${APP_NAME} v${APP_VERSION}`);
 console.log(banner);
 
 /********* MAIN **********/
+const kafkaDP = new KafkaDataPipe({ 
+    BOOTSTRAP_SERVER: KAFKA_BOOTSTRAP_SERVER, 
+    CLIENT_ID, 
+    GROUP_ID 
+});
 
 /**
- * @type {Observer}
+ * @typedef {Object} Observer
  */
-const observer = {
+const kafkaDPObserver = {
     complete() {
         console.info("Processing completed.");
     },
@@ -26,16 +32,26 @@ const observer = {
         console.error(`Processing halted. There was an error. ${e}`);
     },
     next(message) {
-        console.log(message);
+        //console.log(message);
+        const myMessage = new Message(
+            new MessageHeader({
+                id: message.id,
+                eventType: "create",
+                eventName: "create.ice_cream"
+            }),
+            new MessageBody(message)
+        );
+        
+        //console.log(myMessage.value());
+        
+        kafkaDP.put({ 
+            topic: "ingress", 
+            message: myMessage.value()
+        });
     }
 };
 
-const kafkaDP = new KafkaDataPipe({ 
-    BOOTSTRAP_SERVER: KAFKA_BOOTSTRAP_SERVER, 
-    CLIENT_ID, 
-    GROUP_ID 
-});
-const sherbertClient = new IceCreamServiceClient(kafkaDP, observer);
+const sherbertClient = new IceCreamServiceClient(kafkaDP, kafkaDPObserver);
 const sherbert = new IceCreamService(sherbertClient);
 
 console.log(kafkaDP);
