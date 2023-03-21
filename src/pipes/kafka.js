@@ -23,15 +23,24 @@ class KafkaDataPipe extends DataPipe {
     async put({ topic, message }) {
         this.#producer.send({
           topic,
-          messages: [ { key: crypto.randomUUID(), value: JSON.stringify(message) }],
+          messages: [ { key: crypto.randomUUID(), value: message }],
         });
     }
 
     /**
      * 
+     * @param {String} topic - stream topic to subscribe to
+     * @param {Function} onMessage - a callback function to execute on receipt of new messages 
      */
-    pull() {
+    async onPull({ topic, onMessage }) {
+        if (typeof (onMessage) !== 'function') {
+            throw Error(`StreamService.BadRequest => onMessage must be of type function, not (${typeof onMessage})`);
+        }
 
+        await this.#consumer.subscribe({ topic, fromBeginning: true });
+        await this.#consumer.run({
+            eachMessage: onMessage,
+        });
     }
 
     /**

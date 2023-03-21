@@ -1,6 +1,8 @@
 import { promisify } from "util";
 import figlet from "figlet";
-import { encrypt } from "./src/shared/encrypt.js";
+import { encrypt } from "./src/shared/encryption.js";
+
+import { DecryptFilter } from "./src/filters/decrypt/index.js";
 import { IceCreamService, IceCreamServiceClient } from "./src/filters/root/index.js";
 import { Message, MessageHeader, MessageBody } from "./src/filters/root/message.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";

@@ -1,13 +1,38 @@
-//@ts-nocheck See issue https://github.com/tryredeem/redeem-hub/issues/221
+import { decrypt } from "../../shared/encryption.js";
 
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+class DecryptFilter {
+  #dataPipe;
 
-const APP_NAME = "eip-pipes-filters-decrypt";
-const APP_VERSION = "0.0.1";
+  /**
+   * 
+   * @param {DataPipe} dataPipe
+   */
+  constructor(dataPipe) {
+    this.#dataPipe = dataPipe;
+  }
 
-serve((req) => {
-    return new Response(
-      JSON.stringify({ name: `${APP_NAME}`, version: `${APP_VERSION}` }),
-      { headers: { "content-type": "application/json" } },
-    );
-});
+  /**
+   * 
+   * @param {Function} filterFn 
+   */
+  run(filterFn) {
+    this.#dataPipe.onPull({ 
+      topic: "ingress", 
+      onMessage(msg) {
+        // decrypt `msg` here 
+        // filterFn(`msg`);
+      }
+    });
+  }
+
+}
+
+/**
+ * 
+ */
+function onDecrypt(message, dataPipe) {
+    
+}
+
+const decryptFilter = new DecryptFilter(kafkaDP);
+decryptFilter.run(onDecrypt);
