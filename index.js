@@ -1,5 +1,6 @@
 import { promisify } from "util";
 import figlet from "figlet";
+import { encrypt } from "./src/shared/encrypt.js";
 import { IceCreamService, IceCreamServiceClient } from "./src/filters/root/index.js";
 import { Message, MessageHeader, MessageBody } from "./src/filters/root/message.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
@@ -41,20 +42,16 @@ const kafkaDPObserver = {
             }),
             new MessageBody(message)
         );
-        
-        //console.log(myMessage.value());
-        
+                
         kafkaDP.put({ 
             topic: "ingress", 
-            message: myMessage.value()
+            message: encrypt(JSON.stringify(myMessage.value())).content
         });
     }
 };
 
 const sherbertClient = new IceCreamServiceClient(kafkaDP, kafkaDPObserver);
 const sherbert = new IceCreamService(sherbertClient);
-
-console.log(kafkaDP);
 
 /*************************/
 

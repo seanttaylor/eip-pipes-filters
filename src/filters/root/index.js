@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+//import { from, zip, interval } from "rxjs";
 import messages from "./items.js";
 
 /**
@@ -59,7 +60,8 @@ class IceCreamService {
         try {
             this.#client = client;
             this.#client.init();
-        
+            
+            const INTERVAL_MILLIS = 100;
             let idx = 0;
             const iceCream$ = new Observable((subscriber) => {
                 const myInterval = setInterval(()=> {
@@ -69,7 +71,7 @@ class IceCreamService {
             }).subscribe(this.#client.getMessageAPI());
 
         } catch(e) {
-            throw new Error(`IceCreamService: There was an error (${e})`);
+            throw new Error(`IceCreamService -> There was an error (${e})`);
         }
     }
 }
