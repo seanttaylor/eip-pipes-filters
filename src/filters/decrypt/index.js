@@ -1,5 +1,3 @@
-import { decrypt } from "../../shared/encryption.js";
-
 class DecryptFilter {
   #dataPipe;
 
@@ -12,27 +10,21 @@ class DecryptFilter {
   }
 
   /**
-   * 
+   * The core logic of the filter; executes client-specified logic when an incoming message arrives on the data pipe
    * @param {Function} filterFn 
    */
   run(filterFn) {
-    this.#dataPipe.onPull({ 
-      topic: "ingress", 
-      onMessage(msg) {
-        // decrypt `msg` here 
-        // filterFn(`msg`);
+    this.#dataPipe.open();
+    this.#dataPipe.onPull({ topic: "ingress", onMessage: ({ message }) => {
+        //filterFn(msg);
+        filterFn(JSON.parse(message.value.toString()));
       }
     });
   }
 
 }
 
-/**
- * 
- */
-function onDecrypt(message, dataPipe) {
-    
+export {
+  DecryptFilter
 }
 
-const decryptFilter = new DecryptFilter(kafkaDP);
-decryptFilter.run(onDecrypt);

@@ -33,7 +33,7 @@ class KafkaDataPipe extends DataPipe {
      * @param {Function} onMessage - a callback function to execute on receipt of new messages 
      */
     async onPull({ topic, onMessage }) {
-        if (typeof (onMessage) !== 'function') {
+        if (typeof (onMessage) !== "function") {
             throw Error(`StreamService.BadRequest => onMessage must be of type function, not (${typeof onMessage})`);
         }
 

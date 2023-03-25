@@ -60,10 +60,12 @@ class IceCreamService {
             this.#client = client;
             this.#client.init();
             
-            const INTERVAL_MILLIS = 100;
             let idx = 0;
             const iceCream$ = new Observable((subscriber) => {
                 const myInterval = setInterval(()=> {
+                    if (!messages.items[idx]) {
+                        return;
+                    }
                     subscriber.next(messages.items[idx]);
                     idx === messages.items.length ? idx = 0 : idx++;
                 }, 1000);

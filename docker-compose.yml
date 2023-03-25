@@ -36,20 +36,24 @@ services:
   #    - ./:/src/filters/authorize
     #depends_on:
     #  - kafka
-  #decrypt_service:
-  #  container_name: "decrypt_service"
-  #  image: decrypt_service:0.0.1
-  #  environment:
-  #    - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-  #    - KAFKA_CLIENT_ID=softserve
+  decrypt_service:
+    container_name: "decrypt_service"
+    image: decrypt_service:0.0.1
+    environment:
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+      - KAFKA_CLIENT_ID=softserve
+      - ENCRYPTION_ALGORITHM=aes-256-ctr
+      - ENCRYPTION_KEY=vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
       #- AWS_SECRET_ACCESS_KEY=bar
-  #  volumes:
-  #    - ./:/src/filters/decrypt
-    #depends_on:
-    #  - kafka
+    volumes:
+      - ./:/src
+    depends_on:
+      - kafka
+    networks:
+      - shared_network
   ingress_service:
     container_name: "ingress_service"
     image: ingress_service:0.0.1

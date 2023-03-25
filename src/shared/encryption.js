@@ -21,14 +21,14 @@ function encrypt(text) {
 
 /**
  * 
- * @param {String} hash - encrypted string
+ * @param {Object} hash
  * @returns {String}
  */
 function decrypt(hash) {    
   const decipher = crypto.createDecipheriv(ALGORITHM, SECRET_KEY, Buffer.from(hash.iv, 'hex'))
-  const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()])
+  const decrypted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()])
 
-  return decrpyted.toString();
+  return decrypted.toString();
 }
 
 export {
