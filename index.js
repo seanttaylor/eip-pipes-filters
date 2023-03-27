@@ -41,6 +41,7 @@ const kafkaDPObserver = {
                 eventType: "create",
                 eventName: "create.ice_cream"
             }),
+            // add `role` and `userId` field to MessageBody
             new MessageBody(message)
         );
               

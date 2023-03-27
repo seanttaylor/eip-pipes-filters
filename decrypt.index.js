@@ -25,7 +25,7 @@ const kafkaDP = new KafkaDataPipe({
 /*************************/
 
 /**
- * 
+ * Decrypts incoming messages from the "ingress" pipe
  * @param {Object} message - message from Kafka broker
  * @param {KafkaDataPipe} dataPipe - the data pipe the message was delivered on
  */
