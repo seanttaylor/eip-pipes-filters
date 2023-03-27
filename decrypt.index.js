@@ -25,12 +25,17 @@ const kafkaDP = new KafkaDataPipe({
 /*************************/
 
 /**
- * @param message - message from Kafka broker
+ * 
+ * @param {Object} message - message from Kafka broker
+ * @param {KafkaDataPipe} dataPipe - the data pipe the message was delivered on
  */
-function onDecrypt(message) {
+function onDecrypt(message, dataPipe) {
     const decryptedMessage = decrypt(message);
-    //console.log(decryptedMessage);
-    // put decrypted message on decrypt->authz pipe
+    
+    dataPipe.put({
+        topic: "decrypt-authz",
+        message: JSON.stringify(decryptedMessage)
+    });
 }
 
 const decryptFilter = new DecryptFilter(kafkaDP);

@@ -16,8 +16,7 @@ class DecryptFilter {
   run(filterFn) {
     this.#dataPipe.open();
     this.#dataPipe.onPull({ topic: "ingress", onMessage: ({ message }) => {
-        //filterFn(msg);
-        filterFn(JSON.parse(message.value.toString()));
+        filterFn(JSON.parse(message.value.toString()), this.#dataPipe);
       }
     });
   }
