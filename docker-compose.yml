@@ -22,28 +22,37 @@ services:
   #  volumes:
   #    - "/tmp/localstack:/tmp/localstack"
   #    - "/var/run/docker.sock:/var/run/docker.sock"
-  #authz_service:
-  #  container_name: "authz_service"
-  #  image: authz_service:0.0.1
-  #  environment:
-  #    - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-  #    - KAFKA_CLIENT_ID=froyo
+  authz_service:
+    container_name: "authz_service"
+    image: authz_service:0.0.1
+    environment:
+      - APP_NAME=authz_filter
+      - APP_VERSION=0.0.1
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+      - KAFKA_CLIENT_ID=froyo
+      - KAFKA_GROUP_ID=froyo_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
       #- AWS_SECRET_ACCESS_KEY=bar
-  #  volumes:
-  #    - ./:/src/filters/authorize
-    #depends_on:
-    #  - kafka
+    volumes:
+      - ./:/src
+    networks:
+      - shared_network
+    depends_on:
+      - kafka
+    restart: always
   decrypt_service:
     container_name: "decrypt_service"
     image: decrypt_service:0.0.1
     environment:
-      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-      - KAFKA_CLIENT_ID=softserve
+      - APP_NAME=decrypt_filter
+      - APP_VERSION=0.0.1
       - ENCRYPTION_ALGORITHM=aes-256-ctr
       - ENCRYPTION_KEY=vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+      - KAFKA_CLIENT_ID=softserve
+      - KAFKA_GROUP_ID=softserve_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -54,16 +63,18 @@ services:
       - kafka
     networks:
       - shared_network
+    restart: always
   ingress_service:
     container_name: "ingress_service"
     image: ingress_service:0.0.1
     environment:
-      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-      - KAFKA_CLIENT_ID=sherbert
       - APP_NAME=ice_cream_pipeline
       - APP_VERSION=0.0.1
       - ENCRYPTION_ALGORITHM=aes-256-ctr
       - ENCRYPTION_KEY=vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+      - KAFKA_CLIENT_ID=sherbert
+      - KAFKA_GROUP_ID=sherbert_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -74,6 +85,7 @@ services:
       - kafka
     networks:
       - shared_network
+    restart: always
   #notification_service:
   #  container_name: "notification_service"
   #  image: notification_service:0.0.1
@@ -105,7 +117,7 @@ services:
     environment: 
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "ingress:1:1,decrypt-authz:1:1"
+      KAFKA_CREATE_TOPICS: "ingress:1:1,decrypt-authz:1:1,authz-notify:1:1"
     networks:
       - shared_network    
   kowl:

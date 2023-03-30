@@ -16,7 +16,8 @@ class AuthzFilter {
     run(filterFn) {
       this.#dataPipe.open();
       this.#dataPipe.onPull({ topic: "decrypt-authz", onMessage: ({ message }) => {
-          filterFn(JSON.parse(message.value.toString()), this.#dataPipe);
+        const destringifiedMessage = JSON.parse(JSON.parse(message.value.toString()));
+        filterFn(destringifiedMessage, this.#dataPipe);
         }
       });
     }

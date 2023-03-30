@@ -1,6 +1,7 @@
 import { promisify } from "util";
 import figlet from "figlet";
 import { encrypt } from "./src/shared/encryption.js";
+import { grants, roles } from "./src/shared/authorization.js";
 
 import { IceCreamService, IceCreamServiceClient } from "./src/filters/root/index.js";
 import { Message, MessageHeader, MessageBody } from "./src/filters/root/message.js";
@@ -8,7 +9,7 @@ import { KafkaDataPipe } from "./src/pipes/kafka.js";
 
 const APP_NAME = process.env.APP_NAME || "ice_cream_pipeline";
 const APP_VERSION = process.env.APP_VERSION || "0.0.1";
-const GROUP_ID = process.env.KAFKA_GROUP_ID || "default-group";
+const GROUP_ID = process.env.KAFKA_GROUP_ID || "sherbert_group";
 const KAFKA_BOOTSTRAP_SERVER = process.env.KAFKA_BOOTSTRAP_SERVER;
 const CLIENT_ID = process.env.KAFKA_CLIENT_ID;
 
@@ -23,6 +24,8 @@ const kafkaDP = new KafkaDataPipe({
     GROUP_ID 
 });
 
+const roleNames = Object.keys(roles);
+
 /**
  * @typedef {Object} Observer
  */
@@ -34,7 +37,12 @@ const kafkaDPObserver = {
         console.error(`Processing halted. There was an error. ${e}`);
     },
     next(message) {
-        //console.log(message);
+        // Used to simulate random users and roles producing messages
+        const roleNameIdx = Math.round(Math.random());
+        const userIdIdx = Math.round(Math.random());
+        const roleName = roleNames[roleNameIdx];
+        const userId = roles[roleName][userIdIdx];
+
         const myMessage = new Message(
             new MessageHeader({
                 id: message.id,
@@ -42,7 +50,11 @@ const kafkaDPObserver = {
                 eventName: "create.ice_cream"
             }),
             // add `role` and `userId` field to MessageBody
-            new MessageBody(message)
+            new MessageBody({
+                userId,
+                role: roleName,
+                ...message
+            })
         );
               
         kafkaDP.put({ 

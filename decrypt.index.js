@@ -7,7 +7,7 @@ import { KafkaDataPipe } from "./src/pipes/kafka.js";
 
 const APP_NAME = process.env.APP_NAME || "decrypt_filter";
 const APP_VERSION = process.env.APP_VERSION || "0.0.1";
-const GROUP_ID = process.env.KAFKA_GROUP_ID || "default-group";
+const GROUP_ID = process.env.KAFKA_GROUP_ID || "softserve_group";
 const KAFKA_BOOTSTRAP_SERVER = process.env.KAFKA_BOOTSTRAP_SERVER;
 const CLIENT_ID = process.env.KAFKA_CLIENT_ID || "softserve";
 

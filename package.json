@@ -9,7 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "start:decrypt-service": "node decrypt.index.js"
+    "start:decrypt-service": "node decrypt.index.js",
+    "start:authz-service": "node authz.index.js"
+
   },
   "repository": {
     "type": "git",

@@ -2,15 +2,15 @@ import { promisify } from "util";
 import { AccessControl } from "accesscontrol";
 import figlet from "figlet";
 
-import { AuthzFilter } from "./src/filters/authz/index.js";
+import { AuthzFilter } from "./src/filters/authorize/index.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
 import { grants, roles } from "./src/shared/authorization.js";
 
 const APP_NAME = process.env.APP_NAME || "authz_filter";
 const APP_VERSION = process.env.APP_VERSION || "0.0.1";
-const GROUP_ID = process.env.KAFKA_GROUP_ID || "default-group";
+const GROUP_ID = process.env.KAFKA_GROUP_ID || "froyo_group";
 const KAFKA_BOOTSTRAP_SERVER = process.env.KAFKA_BOOTSTRAP_SERVER;
-const CLIENT_ID = process.env.KAFKA_CLIENT_ID || "gelato";
+const CLIENT_ID = process.env.KAFKA_CLIENT_ID || "froyo";
 
 const ac = new AccessControl(grants);
 const figletize = promisify(figlet);
@@ -32,7 +32,7 @@ const kafkaDP = new KafkaDataPipe({
  * @param {KafkaDataPipe} dataPipe - the data pipe the message was delivered on
  */
 function onAuthz(message, dataPipe) {
-    const { role, userId } = message.body;
+    const { role, userId } = message.payload;
 
     //unsupported role type
     if (!roles[role]) {
@@ -59,6 +59,5 @@ function onAuthz(message, dataPipe) {
         message: JSON.stringify(message)
     });
 }
-
 const authzFilter = new AuthzFilter(kafkaDP);
 authzFilter.run(onAuthz);
