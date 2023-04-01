@@ -62,11 +62,19 @@ class IceCreamService {
             
             let idx = 0;
             const iceCream$ = new Observable((subscriber) => {
-                const myInterval = setInterval(()=> {
+                setInterval(()=> {
                     if (!messages.items[idx]) {
                         return;
                     }
-                    subscriber.next(messages.items[idx]);
+
+                    if (idx % 2 === 0) {
+                        subscriber.next(messages.items[idx]);
+                    } else {
+                        subscriber.next(messages.items[idx]);
+                        subscriber.next(messages.items[idx]);
+                        subscriber.next(messages.items[idx]);
+                    }
+
                     idx === messages.items.length ? idx = 0 : idx++;
                 }, 1000);
             }).subscribe(this.#client.getMessageAPI());

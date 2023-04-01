@@ -86,20 +86,26 @@ services:
     networks:
       - shared_network
     restart: always
-  #notification_service:
-  #  container_name: "notification_service"
-  #  image: notification_service:0.0.1
-  #  environment:
-  #    - KAFKA_BOOTSTRAP_SERVER=kafka:9092
-  #    - KAFKA_CLIENT_ID=gelato
+  dedupe_service:
+    container_name: "dedupe_service"
+    image: dedupe_service:0.0.1
+    environment:
+      - APP_NAME=dedupe_filter
+      - APP_VERSION=0.0.1
+      - KAFKA_BOOTSTRAP_SERVER=kafka:9092
+      - KAFKA_CLIENT_ID=gelato
+      - KAFKA_GROUP_ID=gelato_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
       #- AWS_SECRET_ACCESS_KEY=bar
-  #  volumes:
-  #    - ./:/src/filters/notify
-    #depends_on:
-    #  - kafka
+    volumes:
+      - ./:/src
+    depends_on:
+      - kafka
+    networks:
+      - shared_network
+    restart: always
   zookeeper:
     container_name: zookeeper
     image: wurstmeister/zookeeper
@@ -117,7 +123,7 @@ services:
     environment: 
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "ingress:1:1,decrypt-authz:1:1,authz-notify:1:1"
+      KAFKA_CREATE_TOPICS: "ingress:1:1,decrypt-authz:1:1,authz-dedupe:1:1,dedupe:commit:1:1"
     networks:
       - shared_network    
   kowl:

@@ -1,4 +1,4 @@
-class AuthzFilter {
+class DedupeFilter {
     #dataPipe;
   
     /**
@@ -15,15 +15,16 @@ class AuthzFilter {
      */
     run(filterFn) {
       this.#dataPipe.open();
-      this.#dataPipe.onPull({ topic: "decrypt-authz", onMessage: ({ message }) => {
-        const destringifiedMessage = JSON.parse(JSON.parse(message.value.toString()));
-        filterFn(destringifiedMessage, this.#dataPipe);
+      this.#dataPipe.onPull({ topic: "authz-dedupe", onMessage: ({ message }) => {
+          filterFn(JSON.parse(message.value.toString()), this.#dataPipe);
         }
       });
     }
   
   }
   
-export {
-  AuthzFilter
-}
+  export {
+    DedupeFilter
+  }
+  
+  

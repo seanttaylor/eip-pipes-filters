@@ -10,8 +10,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "start:decrypt-service": "node decrypt.index.js",
-    "start:authz-service": "node authz.index.js"
-
+    "start:authz-service": "node authz.index.js",
+    "start:dedupe-service": "node dedupe.index.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +30,7 @@
     "accesscontrol": "^2.2.1",
     "figlet": "^1.5.2",
     "kafkajs": "^2.2.4",
+    "memory-cache": "^0.2.0",
     "rxjs": "^7.8.0"
   },
   "type": "module"

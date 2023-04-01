@@ -55,7 +55,7 @@ function onAuthz(message, dataPipe) {
     }
 
     dataPipe.put({
-        topic: "authz-notify",
+        topic: "authz-dedupe",
         message: JSON.stringify(message)
     });
 }
