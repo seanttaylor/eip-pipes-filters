@@ -1,7 +1,7 @@
 import { promisify } from "util";
 import figlet from "figlet";
 import { encrypt } from "./src/shared/encryption.js";
-import { grants, roles } from "./src/shared/authorization.js";
+import { roles } from "./src/shared/authorization.js";
 
 import { IceCreamService, IceCreamServiceClient } from "./src/filters/root/index.js";
 import { Message, MessageHeader, MessageBody } from "./src/filters/root/message.js";
