@@ -1,5 +1,5 @@
-import { promisify } from "util";
 import figlet from "figlet";
+import { promisify } from "util";
 import { encrypt } from "./src/shared/encryption.js";
 import { roles } from "./src/shared/authorization.js";
 
@@ -49,7 +49,6 @@ const kafkaDPObserver = {
                 eventType: "create",
                 eventName: "create.ice_cream"
             }),
-            // add `role` and `userId` field to MessageBody
             new MessageBody({
                 userId,
                 role: roleName,

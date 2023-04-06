@@ -22,15 +22,15 @@ services:
   #  volumes:
   #    - "/tmp/localstack:/tmp/localstack"
   #    - "/var/run/docker.sock:/var/run/docker.sock"
-  authz_service:
-    container_name: "authz_service"
-    image: authz_service:0.0.1
+  authz_filter:
+    container_name: authz_filter
+    image: authz_filter:0.0.1
     environment:
-      - APP_NAME: authz_filter
-      - APP_VERSION: "0.0.1"
-      - KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      - KAFKA_CLIENT_ID: froyo
-      - KAFKA_GROUP_ID: froyo_group
+      APP_NAME: authz_filter
+      APP_VERSION: "0.0.1"
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_CLIENT_ID: froyo
+      KAFKA_GROUP_ID: froyo_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -42,16 +42,16 @@ services:
     depends_on:
       - kafka
     restart: always
-  commit_service:
-    container_name: "commit_service"
-    image: commit_service:0.0.1
+  commit_filter:
+    container_name: commit_filter
+    image: commit_filter:0.0.1
     environment:
-      - APP_NAME: commit_filter
-      - APP_VERSION: "0.0.1"
-      - KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      - KAFKA_CLIENT_ID: custard
-      - KAFKA_GROUP_ID: custard_group
-      - ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      APP_NAME: commit_filter
+      APP_VERSION: "0.0.1"
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_CLIENT_ID: custard
+      KAFKA_GROUP_ID: custard_group
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -63,17 +63,17 @@ services:
     depends_on:
       - kafka
       - mongo
-  decrypt_service:
-    container_name: "decrypt_service"
-    image: decrypt_service:0.0.1
+  decrypt_filter:
+    container_name: decrypt_filter
+    image: decrypt_filter:0.0.1
     environment:
-      - APP_NAME: decrypt_filter
-      - APP_VERSION: "0.0.1"
-      - ENCRYPTION_ALGORITHM: aes-256-ctr
-      - ENCRYPTION_KEY: vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
-      - KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      - KAFKA_CLIENT_ID: softserve
-      - KAFKA_GROUP_ID: softserve_group
+      APP_NAME: decrypt_filter
+      APP_VERSION: "0.0.1"
+      ENCRYPTION_ALGORITHM: aes-256-ctr
+      ENCRYPTION_KEY: vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_CLIENT_ID: softserve
+      KAFKA_GROUP_ID: softserve_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -86,16 +86,16 @@ services:
       - shared_network
     restart: always
   ingress_service:
-    container_name: "ingress_service"
+    container_name: ingress_service
     image: ingress_service:0.0.1
     environment:
-      - APP_NAME: ice_cream_pipeline
-      - APP_VERSION: "0.0.1"
-      - ENCRYPTION_ALGORITHM: aes-256-ctr
-      - ENCRYPTION_KEY: vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
-      - KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      - KAFKA_CLIENT_ID: sherbert
-      - KAFKA_GROUP_ID: sherbert_group
+      APP_NAME: ice_cream_pipeline
+      APP_VERSION: "0.0.1"
+      ENCRYPTION_ALGORITHM: aes-256-ctr
+      ENCRYPTION_KEY: vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_CLIENT_ID: sherbert
+      KAFKA_GROUP_ID: sherbert_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -107,15 +107,15 @@ services:
     networks:
       - shared_network
     restart: always
-  dedupe_service:
-    container_name: "dedupe_service"
-    image: dedupe_service:0.0.1
+  dedupe_filter:
+    container_name: dedupe_filter
+    image: dedupe_filter:0.0.1
     environment:
-      - APP_NAME: dedupe_filter
-      - APP_VERSION: "0.0.1"
-      - KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      - KAFKA_CLIENT_ID: gelato
-      - KAFKA_GROUP_ID: gelato_group
+      APP_NAME: dedupe_filter
+      APP_VERSION: "0.0.1"
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+      KAFKA_CLIENT_ID: gelato
+      KAFKA_GROUP_ID: gelato_group
       #- AWS_REGION=us-east-1
       #- AWS_ENDPOINT_URL=http://localstack_main:4566
       #- AWS_ACCESS_KEY_ID=foo
@@ -144,7 +144,7 @@ services:
     environment: 
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "ingress:1:1,decrypt-authz:1:1,authz-dedupe:1:1,dedupe:commit:1:1"
+      KAFKA_CREATE_TOPICS: "ingress:1:1,decrypt-authz:1:1,authz-dedupe:1:1,dedupe-commit:1:1"
     networks:
       - shared_network    
   kowl:

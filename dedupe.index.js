@@ -2,7 +2,7 @@ import { promisify } from "util";
 import cache from "memory-cache";
 import figlet from "figlet";
 
-import { DedupeFilter } from "./src/filters/dedupe/index.js";
+import { DedupePipeFilter } from "./src/filters/dedupe/index.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
 
 const APP_NAME = process.env.APP_NAME || "dedupe_filter";
@@ -40,5 +40,6 @@ function onDedupe(message, dataPipe) {
         });
     }
 }
-const dedupeFilter = new DedupeFilter(kafkaDP);
-dedupeFilter.run(onDedupe);
+
+const ddpFilter = new DedupePipeFilter(kafkaDP);
+ddpFilter.run(onDedupe);

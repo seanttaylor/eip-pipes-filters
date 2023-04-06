@@ -1,8 +1,8 @@
+import figlet from "figlet";
 import { promisify } from "util";
 import { AccessControl } from "accesscontrol";
-import figlet from "figlet";
 
-import { AuthzFilter } from "./src/filters/authorize/index.js";
+import { AuthzPipeFilter } from "./src/filters/authorize/index.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
 import { grants, roles } from "./src/shared/authorization.js";
 
@@ -59,5 +59,7 @@ function onAuthz(message, dataPipe) {
         message: JSON.stringify(message)
     });
 }
-const authzFilter = new AuthzFilter(kafkaDP);
-authzFilter.run(onAuthz);
+
+const apFilter = new AuthzPipeFilter(kafkaDP);
+apFilter.run(onAuthz);
+

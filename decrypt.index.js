@@ -1,8 +1,8 @@
-import { promisify } from "util";
 import figlet from "figlet";
+import { promisify } from "util";
 import { decrypt } from "./src/shared/encryption.js";
 
-import { DecryptFilter } from "./src/filters/decrypt/index.js";
+import { DecryptPipeFilter } from "./src/filters/decrypt/index.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
 
 const APP_NAME = process.env.APP_NAME || "decrypt_filter";
@@ -38,8 +38,9 @@ function onDecrypt(message, dataPipe) {
     });
 }
 
-const decryptFilter = new DecryptFilter(kafkaDP);
-decryptFilter.run(onDecrypt);
+
+const dpFilter = new DecryptPipeFilter(kafkaDP);
+dpFilter.run(onDecrypt);
 
 
 

@@ -1,4 +1,6 @@
-class DecryptFilter {
+import PipeFilter from "../index.js";
+
+class DecryptPipeFilter extends PipeFilter {
   #dataPipe;
 
   /**
@@ -6,6 +8,7 @@ class DecryptFilter {
    * @param {DataPipe} dataPipe
    */
   constructor(dataPipe) {
+    super();
     this.#dataPipe = dataPipe;
   }
 
@@ -24,6 +27,6 @@ class DecryptFilter {
 }
 
 export {
-  DecryptFilter
+  DecryptPipeFilter
 }
 
