@@ -2,7 +2,7 @@ import { promisify } from "util";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import figlet from "figlet";
 
-import { CommitFilter } from "./src/filters/commit/index.js";
+import { CommitFilter, CommitPipeFilter } from "./src/filters/commit/index.js";
 import { KafkaDataPipe } from "./src/pipes/kafka.js";
 
 const APP_NAME = process.env.APP_NAME || "commit_filter";
@@ -59,10 +59,13 @@ async function onDatabaseCommit(message) {
    try {
     connectedClient.collection("ice_creams").insertOne({ _id, ...messageBody });
    } catch(e) {
-        console.error(e);
+      console.error(e);
    }
 
 }
 
 const commitFilter = new CommitFilter(kafkaDP);
 commitFilter.run(onDatabaseCommit);
+
+//const cpFilter = new CommitPipeFilter(kafkaDP);
+//cpFilter.run(onDatabaseCommit);
