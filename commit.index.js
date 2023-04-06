@@ -56,8 +56,12 @@ async function MongoDBClientWrapper(client) {
  */
 async function onDatabaseCommit(message) {
    const { id: _id, ...messageBody } = message.payload;
-   //console.log(`Message (${message.header.eventId}) ready to commit...`);
-   connectedClient.collection("ice_creams").insertOne({ _id, ...messageBody });
+   try {
+    connectedClient.collection("ice_creams").insertOne({ _id, ...messageBody });
+   } catch(e) {
+        console.error(e);
+   }
+
 }
 
 const commitFilter = new CommitFilter(kafkaDP);
