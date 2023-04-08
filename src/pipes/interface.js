@@ -28,7 +28,7 @@ class DataPipe {
     /**
      * Starts consuming a data source (e.g. a queue, stream REST endpoint)
      */
-    pull() {
+    onPull() {
         
     }
 
