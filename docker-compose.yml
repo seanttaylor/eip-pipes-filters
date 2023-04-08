@@ -24,17 +24,16 @@ services:
   #    - "/var/run/docker.sock:/var/run/docker.sock"
   authz_filter:
     container_name: authz_filter
-    image: authz_filter:0.0.1
+    #image: authz_filter:0.0.1
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.authz
     environment:
       APP_NAME: authz_filter
       APP_VERSION: "0.0.1"
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
       KAFKA_CLIENT_ID: froyo
       KAFKA_GROUP_ID: froyo_group
-      #- AWS_REGION=us-east-1
-      #- AWS_ENDPOINT_URL=http://localstack_main:4566
-      #- AWS_ACCESS_KEY_ID=foo
-      #- AWS_SECRET_ACCESS_KEY=bar
     volumes:
       - ./:/src
     networks:
@@ -44,7 +43,10 @@ services:
     restart: always
   commit_filter:
     container_name: commit_filter
-    image: commit_filter:0.0.1
+    #image: commit_filter:0.0.1
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.commit
     environment:
       APP_NAME: commit_filter
       APP_VERSION: "0.0.1"
@@ -52,10 +54,6 @@ services:
       KAFKA_CLIENT_ID: custard
       KAFKA_GROUP_ID: custard_group
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-      #- AWS_REGION=us-east-1
-      #- AWS_ENDPOINT_URL=http://localstack_main:4566
-      #- AWS_ACCESS_KEY_ID=foo
-      #- AWS_SECRET_ACCESS_KEY=bar
     volumes:
       - ./:/src
     networks:
@@ -65,7 +63,10 @@ services:
       - mongo
   decrypt_filter:
     container_name: decrypt_filter
-    image: decrypt_filter:0.0.1
+    #image: decrypt_filter:0.0.1
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.decrypt
     environment:
       APP_NAME: decrypt_filter
       APP_VERSION: "0.0.1"
@@ -74,10 +75,6 @@ services:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
       KAFKA_CLIENT_ID: softserve
       KAFKA_GROUP_ID: softserve_group
-      #- AWS_REGION=us-east-1
-      #- AWS_ENDPOINT_URL=http://localstack_main:4566
-      #- AWS_ACCESS_KEY_ID=foo
-      #- AWS_SECRET_ACCESS_KEY=bar
     volumes:
       - ./:/src
     depends_on:
@@ -87,7 +84,10 @@ services:
     restart: always
   ingress_service:
     container_name: ingress_service
-    image: ingress_service:0.0.1
+    #image: ingress_service:0.0.1
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     environment:
       APP_NAME: ice_cream_pipeline
       APP_VERSION: "0.0.1"
@@ -96,10 +96,6 @@ services:
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
       KAFKA_CLIENT_ID: sherbert
       KAFKA_GROUP_ID: sherbert_group
-      #- AWS_REGION=us-east-1
-      #- AWS_ENDPOINT_URL=http://localstack_main:4566
-      #- AWS_ACCESS_KEY_ID=foo
-      #- AWS_SECRET_ACCESS_KEY=bar
     volumes:
       - ./:/src
     depends_on:
@@ -109,17 +105,16 @@ services:
     restart: always
   dedupe_filter:
     container_name: dedupe_filter
-    image: dedupe_filter:0.0.1
+    #image: dedupe_filter:0.0.1
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.dedupe
     environment:
       APP_NAME: dedupe_filter
       APP_VERSION: "0.0.1"
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
       KAFKA_CLIENT_ID: gelato
       KAFKA_GROUP_ID: gelato_group
-      #- AWS_REGION=us-east-1
-      #- AWS_ENDPOINT_URL=http://localstack_main:4566
-      #- AWS_ACCESS_KEY_ID=foo
-      #- AWS_SECRET_ACCESS_KEY=bar
     volumes:
       - ./:/src
     depends_on:

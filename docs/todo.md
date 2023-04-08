@@ -2,5 +2,4 @@
 - Create `DataPipe` implementation using AWS SQS 
 - Refactor all filters as AWS Lambdas
 - Attach all filters to SQS data pipes
-- Refactor non-localstack docker-compose configuration to use the `build` directive for each service definition so that the a machine does not need to have local copies of the Docker images for each filter 
 - Add a conclusion section to README.md to explain major insights and design choices; include the diagrams provided in the docs
