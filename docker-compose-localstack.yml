@@ -15,59 +15,59 @@ services:
       - SERVICES=cloudwatch,iam,lambda,logs,s3,sqs,secretsmanager,ssm
       - DEBUG=${DEBUG-}
       - DATA_DIR=${DATA_DIR-}
-      - LAMBDA_EXECUTOR=local
+      #- LAMBDA_EXECUTOR=local
       - LOCALSTACK_API_KEY=${LOCALSTACK_API_KEY-}  # only required for Pro
-      - HOST_TMP_FOLDER=/tmp/localstack
+      #- HOST_TMP_FOLDER=/tmp/localstack
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
       - "/tmp/localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-  ingress_service:
-    container_name: ingress_service
-    #image: ingress_service:0.0.1
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    environment:
-      APP_NAME: ice_cream_pipeline
-      APP_VERSION: "0.0.1"
-      ENCRYPTION_ALGORITHM: aes-256-ctr
-      ENCRYPTION_KEY: vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
-      KAFKA_BOOTSTRAP_SERVER: kafka:9092
-      KAFKA_CLIENT_ID: sherbert
-      KAFKA_GROUP_ID: sherbert_group
-      AWS_REGION: us-east-1
-      AWS_ENDPOINT_URL: http://localstack_main:4566
-      AWS_ACCESS_KEY_ID: foo
-      AWS_SECRET_ACCESS_KEY: bar
-    volumes:
-      - ./:/src
-    networks:
-      - shared_network
-    restart: always
-  mongo:
-    image: mongo
-    container_name: mongodb
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: sorbet
-    networks:
-      - shared_network
-  mongo-express:
-    image: mongo-express
-    container_name: mongodb_ui_client
-    restart: always
-    ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongodb:27017/
-    networks:
-      - shared_network
-    depends_on:
-      - mongo
-networks:
-  shared_network:
+  #ingress_service:
+  #  container_name: ingress_service
+  #  #image: ingress_service:0.0.1
+  #  build:
+  #    context: .
+  #    dockerfile: ./Dockerfile
+  #  environment:
+  #    APP_NAME: ice_cream_pipeline
+  #    APP_VERSION: "0.0.1"
+  #    ENCRYPTION_ALGORITHM: aes-256-ctr
+  #    ENCRYPTION_KEY: vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3
+  #    KAFKA_BOOTSTRAP_SERVER: kafka:9092
+  #    KAFKA_CLIENT_ID: sherbert
+  #    KAFKA_GROUP_ID: sherbert_group
+  #    AWS_REGION: us-east-1
+  #    AWS_ENDPOINT_URL: http://localstack_main:4566
+  #    AWS_ACCESS_KEY_ID: foo
+  #    AWS_SECRET_ACCESS_KEY: bar
+  #  volumes:
+  #    - ./:/src
+  #  networks:
+  #    - shared_network
+  #  restart: always
+  #mongo:
+  #  image: mongo
+  #  container_name: mongodb
+  #  restart: always
+  #  environment:
+  #    MONGO_INITDB_ROOT_USERNAME: root
+  #    MONGO_INITDB_ROOT_PASSWORD: example
+  #    MONGO_INITDB_DATABASE: sorbet
+  #  networks:
+  #    - shared_network
+  #mongo-express:
+  #  image: mongo-express
+  #  container_name: mongodb_ui_client
+  #  restart: always
+  #  ports:
+  #    - 8081:8081
+  #  environment:
+  #    ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #    ME_CONFIG_MONGODB_ADMINPASSWORD: example
+  #    ME_CONFIG_MONGODB_URL: mongodb://root:example@mongodb:27017/
+  #  networks:
+  #    - shared_network
+  #  depends_on:
+  #    - mongo
+#networks:
+#  shared_network:
