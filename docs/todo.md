@@ -1,4 +1,4 @@
-- SCAFFOLD localstack deployment using Terraform 
+- Install AWS SDK for interacting with Localstack resources via command line
 - Create `DataPipe` implementation using AWS SQS 
 - Refactor all filters as AWS Lambdas
 - Attach all filters to SQS data pipes

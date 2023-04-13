@@ -12,7 +12,7 @@ services:
       - "127.0.0.1:4510-4559:4510-4559"  # external service port range
       - "127.0.0.1:4566:4566"            # LocalStack Edge Proxy
     environment:
-      - SERVICES=cloudwatch,iam,lambda,logs,s3,sqs,secretsmanager,ssm
+      - SERVICES=cloudwatch,iam,lambda,logs,s3,sqs,secretsmanager,ssm,sts
       - DEBUG=${DEBUG-}
       - DATA_DIR=${DATA_DIR-}
       #- LAMBDA_EXECUTOR=local
