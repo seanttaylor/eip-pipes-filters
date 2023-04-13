@@ -1,3 +1,4 @@
+# See https://tinyurl.com/yars5wa8 for tutorial on Terraform w/ localstack
 
 terraform {
   backend "local" {}
@@ -13,14 +14,15 @@ provider "aws" {
   skip_requesting_account_id  = true
 
   endpoints {
-    cloudwatch = local.localstack_edge_port
-    iam    = local.localstack_edge_port
-    lambda = local.localstack_edge_port
-    logs   = local.localstack_edge_port
-    s3     = local.localstack_edge_port
+    cloudwatch     = local.localstack_edge_port
+    iam            = local.localstack_edge_port
+    lambda         = local.localstack_edge_port
+    logs           = local.localstack_edge_port
+    s3             = local.localstack_edge_port
     secretsmanager = local.localstack_edge_port
-    sqs    = local.localstack_edge_port
-    ssm = local.localstack_edge_port
+    sqs            = local.localstack_edge_port
+    ssm            = local.localstack_edge_port
+    sts            = local.localstack_edge_port
   }
 }
 
