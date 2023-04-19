@@ -1,7 +1,7 @@
 # See https://tinyurl.com/yars5wa8 for tutorial on Terraform w/ localstack
 # If the AWS CLI throws the following error: 403 InvalidClientTokenId: (The security token included in 
 # the request is invalid) when calling or creating a Terraform resource ensure to append the `--endpoint-url` flag
-# (e.g. aws sqs list-queues --endpoint-url http://0.0.0.0.4566)
+# (e.g. aws sqs list-queues --endpoint-url=http://0.0.0.0.4566)
 
 terraform {
   backend "local" {}

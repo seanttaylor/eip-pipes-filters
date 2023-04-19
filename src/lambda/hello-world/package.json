@@ -4,5 +4,6 @@
     "version": "0.0.1",
     "main": "index.js",
     "author": "Sean Travis Taylor",
-    "license": "ISC"
+    "license": "ISC",
+    "type": "module"
 }
